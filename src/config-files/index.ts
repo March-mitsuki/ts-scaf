@@ -2,12 +2,15 @@ import path from "path";
 import fs from "fs";
 
 import { ConfigFlag } from "@/installation";
-import TsConfigTemplate from "./tsconfig-json.template";
-import ESLintConfigTSTemplate from "./eslint-config-ts.template";
-import PrettierConfigJSTemplate from "./prettier-config-js.template";
-import GitignoreTemplate from "./gitignore.tmplate";
-import ReadmeTemplate from "./readme.tmplate";
-import PackageJsonTmplate from "./package-json.tmplate";
+import tsConfigTemplate from "./tsconfig-json.template";
+import eSLintConfigTSTemplate from "./eslint-config-ts.template";
+import prettierConfigJSTemplate from "./prettier-config-js.template";
+import gitignoreTemplate from "./gitignore.tmplate";
+import readmeTemplate from "./readme.tmplate";
+import packageJsonTmplate from "./package-json.tmplate";
+import indexTsTemplate from "./index-ts.template";
+import vitestConfigTsTemplate from "./vitest-config-ts.template";
+import indexTestTsTmplate from "./index-test-ts.tmplate";
 
 import logging from "@/lib/logging";
 const logger = logging.getLogger("global");
@@ -36,7 +39,7 @@ export class ConfigFiles {
 
   parseFlags(...extFlags: ExtFlags[]): this {
     if (this._flags.has("eslint-tsconfig")) {
-      this._addESLintConfigTS();
+      this._addESLint();
     } else {
       logger.error("Warning: Only eslint.config.ts is supported now.");
       logger.error(
@@ -45,10 +48,13 @@ export class ConfigFiles {
     }
 
     if (this._flags.has("prettier")) {
-      this._addPrettierConfigJS();
+      this._addPrettier();
+    }
+    if (this._flags.has("vitest")) {
+      this._addVitest();
     }
 
-    this._addTsConfigJson();
+    this._addTsConfig();
     this._addGitignore();
     this._addPackageJSON();
     this._addSrcDir();
@@ -63,25 +69,25 @@ export class ConfigFiles {
     return this;
   }
 
-  _addTsConfigJson(): this {
+  _addTsConfig(): this {
     const tsConfigPath = "tsconfig.json";
-    const tsConfigContent = TsConfigTemplate;
+    const tsConfigContent = tsConfigTemplate;
 
     this._writers.set(tsConfigPath, tsConfigContent);
     return this;
   }
 
-  _addESLintConfigTS(): this {
+  _addESLint(): this {
     const eslintConfigTSPath = "eslint.config.ts";
-    const eslintConfigTSContent = ESLintConfigTSTemplate;
+    const eslintConfigTSContent = eSLintConfigTSTemplate;
 
     this._writers.set(eslintConfigTSPath, eslintConfigTSContent);
     return this;
   }
 
-  _addPrettierConfigJS(): this {
+  _addPrettier(): this {
     const prettierConfigJSPath = "prettier.config.js";
-    const prettierConfigJSContent = PrettierConfigJSTemplate;
+    const prettierConfigJSContent = prettierConfigJSTemplate;
 
     this._writers.set(prettierConfigJSPath, prettierConfigJSContent);
     return this;
@@ -89,7 +95,7 @@ export class ConfigFiles {
 
   _addPackageJSON(): this {
     const packageJsonPath = "package.json";
-    const packageJsonContent = PackageJsonTmplate.replace(
+    const packageJsonContent = packageJsonTmplate.replace(
       ...makeReplacer("name", this._projectName),
     );
 
@@ -99,7 +105,7 @@ export class ConfigFiles {
 
   _addGitignore(): this {
     const gitignorePath = ".gitignore";
-    const gitignoreContent = GitignoreTemplate;
+    const gitignoreContent = gitignoreTemplate;
 
     this._writers.set(gitignorePath, gitignoreContent);
     return this;
@@ -107,18 +113,35 @@ export class ConfigFiles {
 
   _addReadme(): this {
     const readmePath = "README.md";
-    const readmeContent = ReadmeTemplate;
+    const readmeContent = readmeTemplate;
 
     this._writers.set(readmePath, readmeContent);
     return this;
   }
 
   _addSrcDir(): this {
-    const srcDirPath = path.join("src", "index.ts");
-    let srcDirContent = "// Entry point for your TypeScript application";
-    srcDirContent += `\n\nconsole.log("Welcome to ${this._projectName}");\n`;
+    const indexTsPath = path.join("src", "index.ts");
+    const indexTsContent = indexTsTemplate.replace(
+      ...makeReplacer("name", this._projectName),
+    );
 
-    this._writers.set(srcDirPath, srcDirContent);
+    this._writers.set(indexTsPath, indexTsContent);
+    return this;
+  }
+
+  _addVitest(): this {
+    const vitestConfigPath = "vitest.config.ts";
+    const vitestConfigContent = vitestConfigTsTemplate;
+    this._writers.set(vitestConfigPath, vitestConfigContent);
+
+    const testDirPath = "tests";
+    const indexTestTsPath = path.join(testDirPath, "index.test.ts");
+    const indexTestTsContent = indexTestTsTmplate;
+    this._writers.set(
+      indexTestTsPath,
+      indexTestTsContent.replace(...makeReplacer("name", this._projectName)),
+    );
+
     return this;
   }
 
