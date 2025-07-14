@@ -105,11 +105,14 @@ export class Logger {
 
 export class Logging {
   _loggers: Map<string, Logger> = new Map();
-  _globalLevel: string = "info";
+  _globalLevel: string | undefined;
 
   getLogger(name: string, cfg?: LoggerConfig): Logger {
     if (!this._loggers.has(name)) {
-      const logger = new Logger({ ...cfg, level: this._globalLevel });
+      if (this._globalLevel) {
+        cfg = { ...cfg, level: this._globalLevel };
+      }
+      const logger = new Logger(cfg);
       this._loggers.set(name, logger);
     }
     return this._loggers.get(name)!;
