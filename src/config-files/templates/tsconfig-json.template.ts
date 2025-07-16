@@ -1,4 +1,4 @@
-const tmplate = `
+const template = `
 {
   "compilerOptions": {
     "target": "es2024",
@@ -26,4 +26,4 @@ const tmplate = `
   "include": ["src/**/*.ts", "tests/**/*.ts", "eslint.config.ts"]
 }
 `;
-export default tmplate.trim() + "\n";
+export default template.trim() + "\n";

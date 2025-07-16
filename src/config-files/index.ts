@@ -2,15 +2,15 @@ import path from "path";
 import fs from "fs";
 
 import { ConfigFlag } from "@/installation";
-import tsConfigTemplate from "./tsconfig-json.template";
-import eSLintConfigTSTemplate from "./eslint-config-ts.template";
-import prettierConfigJSTemplate from "./prettier-config-js.template";
-import gitignoreTemplate from "./gitignore.tmplate";
-import readmeTemplate from "./readme.tmplate";
-import packageJsonTmplate from "./package-json.tmplate";
-import indexTsTemplate from "./index-ts.template";
-import vitestConfigTsTemplate from "./vitest-config-ts.template";
-import indexTestTsTmplate from "./index-test-ts.tmplate";
+import tsConfigTemplate from "./templates/tsconfig-json.template";
+import eSLintConfigTSTemplate from "./templates/eslint-config-ts.template";
+import prettierConfigJSTemplate from "./templates/prettier-config-js.template";
+import gitignoreTemplate from "./templates/gitignore.template";
+import readmeTemplate from "./templates/readme.template";
+import packageJsonTemplate from "./templates/package-json.template";
+import indexTsTemplate from "./templates/index-ts.template";
+import vitestConfigTsTemplate from "./templates/vitest-config-ts.template";
+import indexTestTsTemplate from "./templates/index-test-ts.template";
 
 import logging from "@/lib/logging";
 const logger = logging.getLogger("global");
@@ -95,7 +95,7 @@ export class ConfigFiles {
 
   _addPackageJSON(): this {
     const packageJsonPath = "package.json";
-    const packageJsonContent = packageJsonTmplate.replace(
+    const packageJsonContent = packageJsonTemplate.replace(
       ...makeReplacer("name", this._projectName),
     );
 
@@ -136,7 +136,7 @@ export class ConfigFiles {
 
     const testDirPath = "tests";
     const indexTestTsPath = path.join(testDirPath, "index.test.ts");
-    const indexTestTsContent = indexTestTsTmplate;
+    const indexTestTsContent = indexTestTsTemplate;
     this._writers.set(
       indexTestTsPath,
       indexTestTsContent.replace(...makeReplacer("name", this._projectName)),
