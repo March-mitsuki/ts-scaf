@@ -10,4 +10,4 @@ describe("Test installation", () => {
 });
 `;
 
-export default tmplate.trim() + "\n";
+export default template.trim() + "\n";
