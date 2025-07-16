@@ -54,9 +54,11 @@ We decided against using JSON or YAML since they lack proper type support for co
 - [x] v0.1.3 <- NOW
   - [x] Create a typescript project with recommanded devDependencies
 - [ ] v0.2.0
-  - [ ] Add test suit to recommanded installation. (use vitest)
-- [ ] v0.3.0
+  - [x] Add test suit to recommanded installation. (use vitest)
   - [ ] Allow user selection with cmd line
+  - [ ] Add test for this project
+- [ ] v0.3.0
+  - [ ] Complete library usage
 - [ ] v0.4.0
   - [ ] Add config file feature for advance usage
 - [ ] v0.5.0

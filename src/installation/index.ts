@@ -8,6 +8,7 @@ export const ConfigFlags = [
   "eslint",
   "eslint-tsconfig",
   "prettier",
+  "vitest",
 ] as const;
 export type ConfigFlag = (typeof ConfigFlags)[number];
 
@@ -30,7 +31,8 @@ export class Installation {
       .withPrettier()
       .withESLintTSConfig()
       .withTsup()
-      .withTsx();
+      .withTsx()
+      .withVitest();
   }
 
   withNodeJS(): this {
@@ -41,6 +43,8 @@ export class Installation {
 
   withESLint(): this {
     this._devDependencies.add("eslint");
+    this._devDependencies.add("@eslint/js");
+    this._devDependencies.add("typescript-eslint");
     if (this._devDependencies.has("prettier")) {
       this.withESLintPrettier();
     }
@@ -77,6 +81,13 @@ export class Installation {
 
   withTsx(): this {
     this._devDependencies.add("tsx");
+    return this;
+  }
+
+  withVitest(): this {
+    this._devDependencies.add("vitest");
+    this._devDependencies.add("vite-tsconfig-paths");
+    this._flags.add("vitest");
     return this;
   }
 
