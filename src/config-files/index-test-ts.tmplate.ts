@@ -1,4 +1,4 @@
-const tmplate = `
+const template = `
 import { describe, it, expect } from "vitest";
 import { add } from "@/index";
 
