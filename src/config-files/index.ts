@@ -3,7 +3,7 @@ import fs from "fs";
 
 import { ConfigFlag } from "@/installation";
 import tsConfigTemplate from "./templates/tsconfig-json.template";
-import eSLintConfigTSTemplate from "./templates/eslint-config-ts.template";
+import esLintConfigTSTemplate from "./templates/eslint-config-ts.template";
 import prettierConfigJSTemplate from "./templates/prettier-config-js.template";
 import gitignoreTemplate from "./templates/gitignore.template";
 import readmeTemplate from "./templates/readme.template";
@@ -79,7 +79,7 @@ export class ConfigFiles {
 
   _addESLint(): this {
     const eslintConfigTSPath = "eslint.config.ts";
-    const eslintConfigTSContent = eSLintConfigTSTemplate;
+    const eslintConfigTSContent = esLintConfigTSTemplate;
 
     this._writers.set(eslintConfigTSPath, eslintConfigTSContent);
     return this;
