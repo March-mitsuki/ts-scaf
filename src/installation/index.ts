@@ -43,6 +43,8 @@ export class Installation {
 
   withESLint(): this {
     this._devDependencies.add("eslint");
+    this._devDependencies.add("@eslint/js");
+    this._devDependencies.add("typescript-eslint");
     if (this._devDependencies.has("prettier")) {
       this.withESLintPrettier();
     }
